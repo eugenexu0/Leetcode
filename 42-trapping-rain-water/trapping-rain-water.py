@@ -10,11 +10,11 @@ class Solution:
             if height[leftPtr] < height[rightPtr]:
                 leftPtr = leftPtr + 1
                 maxLeft = max(maxLeft, height[leftPtr])
-                water = water + max(0, maxLeft - height[leftPtr])
+                water = water + maxLeft - height[leftPtr]
             else:
                 rightPtr = rightPtr - 1
                 maxRight = max(maxRight, height[rightPtr])
-                water = water + max(0, maxRight - height[rightPtr])
+                water = water + maxRight - height[rightPtr]
         return water
 
             
