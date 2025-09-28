@@ -1,19 +1,20 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
-        #O(n) memory solution
-        maxLeft = [height[0]]
-        maxRight = [height[-1]]
-        for i in range(1, len(height)):
-            maxLeft.append(max(maxLeft[i-1],height[i]))
-
-        for i in range(len(height) - 2, -1, -1):
-            maxRight.append(max(maxRight[-1],height[i]))
-        maxRight.reverse()
-        
+        #O(1) memory sol
+        leftPtr = 0
+        rightPtr = len(height) - 1
+        maxLeft = height[0]
+        maxRight = height[-1]
         water = 0
-        left = height[0]
-        for i in range(1, len(height) - 1):
-            top = min(maxLeft[i-1], maxRight[i+1])
-            water = water + max(0, top - height[i])
-
+        while (leftPtr < rightPtr):
+            if height[leftPtr] < height[rightPtr]:
+                leftPtr = leftPtr + 1
+                maxLeft = max(maxLeft, height[leftPtr])
+                water = water + max(0, maxLeft - height[leftPtr])
+            else:
+                rightPtr = rightPtr - 1
+                maxRight = max(maxRight, height[rightPtr])
+                water = water + max(0, maxRight - height[rightPtr])
         return water
+
+            
