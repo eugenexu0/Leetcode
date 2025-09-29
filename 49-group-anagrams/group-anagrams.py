@@ -6,4 +6,7 @@ class Solution:
             sort = ''.join(sorted(s))
             hashmap[sort].append(s)
 
-        return list(hashmap.values())
+        ans = []
+        for value in hashmap.values():
+            ans.append(value)
+        return ans
