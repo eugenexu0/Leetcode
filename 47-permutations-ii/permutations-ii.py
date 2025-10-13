@@ -3,17 +3,19 @@ class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         def recurse(nums, ans, arr, n): 
             if len(arr) == n: 
-                if not arr in ans:
-                    ans.append(arr)
+                ans.append(arr.copy())
                 return
-            for i in nums:
-                newarr = arr.copy()
-                newarr.append(i)
-                newnums = nums.copy()
-                newnums.remove(i)
-                recurse(newnums, ans, newarr, n)
+            for i in list(nums):
+                if nums[i] == 0:
+                    continue
+                arr.append(i)
+                nums[i] -= 1
+                recurse(nums, ans, arr, n)
+                nums[i] += 1
+                arr.pop()
 
         ans = []
         arr = []
-        recurse(nums, ans, arr, len(nums))
+        freqMap = Counter(nums)
+        recurse(freqMap, ans, arr, len(nums))
         return ans
