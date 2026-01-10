@@ -8,7 +8,7 @@ class Solution:
         bucket = [[] for _ in range(len(nums) + 1)]
         for key, value in freq.items():
             bucket[value].append(key)
-        print(bucket)
+
         ans = []
         for i in range(len(bucket) - 1, -1, -1):
             for j in bucket[i]:
