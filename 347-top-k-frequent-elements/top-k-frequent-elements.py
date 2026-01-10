@@ -11,8 +11,7 @@ class Solution:
         print(bucket)
         ans = []
         for i in range(len(bucket) - 1, -1, -1):
-            if bucket[i]:
-                for j in bucket[i]:
-                    ans.append(j)
+            for j in bucket[i]:
+                ans.append(j)
             if len(ans) == k:
                 return ans
