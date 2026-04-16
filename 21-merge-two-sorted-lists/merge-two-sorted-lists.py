@@ -15,12 +15,5 @@ class Solution:
                 start.next = list1
                 list1 = list1.next
             start = start.next
-        while list1:
-            start.next = list1
-            list1 = list1.next
-            start = start.next
-        while list2:
-            start.next = list2
-            list2 = list2.next
-            start = start.next
+        start.next = list1 if list1 else list2
         return ans.next
