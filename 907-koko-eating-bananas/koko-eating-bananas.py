@@ -1,7 +1,7 @@
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
         low, high = 1, max(piles)
-        ans = math.inf
+        ans = 0
         while low <= high:
             speed = (low + high) // 2
             count = 0
@@ -11,7 +11,7 @@ class Solution:
             #if count worked, try lower (better) speed
             if count <= h:
                 high = speed - 1
-                ans = min(ans, speed)
+                ans = speed
             #didn't work, try higher (worse) speed
             else:
                 low = speed + 1
