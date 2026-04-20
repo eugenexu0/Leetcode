@@ -3,7 +3,7 @@ class Solution:
         low, high = 0, len(nums) - 1
         while low <= high:
             mid = (low + high) // 2
-            print(f'{low} {mid} {high}')
+            #print(f'{low} {mid} {high}')
             if nums[mid] == target:
                 return mid
             #partition reset is on RIGHT side
