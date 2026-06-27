@@ -15,6 +15,7 @@ class Solution:
             right = height(root.right)
             if abs(left - right) > 1:
                 ans = False
+                return -1 #can quit early
             return 1 + max(left, right)
         height(root)
         return ans
