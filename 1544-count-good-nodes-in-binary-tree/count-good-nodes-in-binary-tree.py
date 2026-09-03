@@ -6,20 +6,11 @@
 #         self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        def helper(node: TreeNode, maxInt: int) -> int:
+        def dfs(node: TreeNode, high: int) -> int:
             if not node:
                 return 0
-            if node.val < maxInt:
-                return helper(node.left, maxInt) + helper(node.right, maxInt)
-            else:
-                return 1 + helper(node.left, node.val) + helper(node.right, node.val)
-
-        if not root:
-            return 0
-    
-        count = 1
-        count += helper(root.left, root.val)
-        count += helper(root.right, root.val)
-
-        return count
+            if node.val >= high:
+                return 1 + dfs(node.left, node.val) + dfs(node.right, node.val)
+            return dfs(node.left, high) + dfs(node.right, high)
+        return dfs(root, root.val)
         
