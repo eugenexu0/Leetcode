@@ -1,20 +1,17 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
-        #O(1) memory sol
-        leftPtr = 0
-        rightPtr = len(height) - 1
-        maxLeft = height[0]
-        maxRight = height[-1]
-        water = 0
-        while (leftPtr < rightPtr):
-            if height[leftPtr] < height[rightPtr]:
-                leftPtr = leftPtr + 1
-                maxLeft = max(maxLeft, height[leftPtr])
-                water = water + maxLeft - height[leftPtr]
+        #key obv: formula for water in a position is:
+        #min(tallest height left, tallest height right) - current height @ pos
+        left, right = 0, len(height) - 1
+        maxleft, maxright = height[left], height[right]
+        ans = 0
+        while left < right:
+            if height[left] < height[right]:
+                left += 1
+                ans += max(maxleft - height[left], 0)
+                maxleft = max(maxleft, height[left])
             else:
-                rightPtr = rightPtr - 1
-                maxRight = max(maxRight, height[rightPtr])
-                water = water + maxRight - height[rightPtr]
-        return water
-
-            
+                right -= 1
+                ans += max(maxright - height[right], 0)
+                maxright = max(maxright, height[right])
+        return ans
