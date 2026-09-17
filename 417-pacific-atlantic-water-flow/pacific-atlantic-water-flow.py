@@ -4,10 +4,13 @@ class Solution:
         rows, cols = len(heights), len(heights[0])
         canReachPacific = [[True if i == 0 or j == 0 else False for i in range(cols)] for j in range(rows)]
         canReachAtlantic = [[True if i == cols - 1  or j == rows - 1 else False for i in range(cols)] for j in range(rows)]
-        def dfs(i, j, isPacific):
-            #print(f'{canReachPacific=}, {canReachAtlantic=}')
-            stack = [(i, j)]
+        def dfs(starts, isPacific):
+            
+            stack = starts[:]
+            #print(f'{stack=}')
             visited = [[False for _ in range(cols)] for _ in range(rows)]
+            for i, j in stack:
+                visited[i][j] = True
             while stack:
                 x, y = stack.pop()
                 node = heights[x][y]
@@ -21,10 +24,15 @@ class Solution:
                         else:
                             canReachAtlantic[ni][nj] = True
 
+        pacificStarts = []
+        atlanticStarts = []
         for i in range(rows):
-            dfs(i, 0, True)
-            dfs(i, cols - 1, False)
+            pacificStarts.append((i, 0))
+            atlanticStarts.append((i, cols - 1))
         for j in range(cols):
-            dfs(0, j, True)
-            dfs(rows - 1, j, False)
+            pacificStarts.append((0, j))
+            atlanticStarts.append((rows - 1, j))
+        dfs(pacificStarts, True)
+        dfs(atlanticStarts, False)
+        #print(f'{canReachPacific=}, {canReachAtlantic=}')
         return [[i, j] for i in range(rows) for j in range(cols) if canReachPacific[i][j] and canReachAtlantic[i][j]]
