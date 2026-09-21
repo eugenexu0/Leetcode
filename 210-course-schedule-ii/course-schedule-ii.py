@@ -7,11 +7,11 @@ class Solution:
         for i in range(numCourses):
             inDegreeList[i] = 0
         for u, v in prerequisites:
-            inDegreeList[v] += 1
-            if u not in adjList:
-                adjList[u] = [v]
+            inDegreeList[u] += 1
+            if v not in adjList:
+                adjList[v] = [u]
             else:
-                adjList[u].append(v)
+                adjList[v].append(u)
         #put every node with 0 incoming edge in queue
         queue = deque([])
         ans = []
@@ -32,7 +32,5 @@ class Solution:
                 #if neighbor has 0 in-degree, add to queue as well
                 if inDegreeList[neighbor] == 0:
                     queue.append(neighbor)
-        for u, v in inDegreeList.items():
-            if v != 0:
-                return []
-        return ans[::-1]
+        
+        return ans if len(ans) == numCourses else []
