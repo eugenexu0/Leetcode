@@ -33,6 +33,9 @@ class Solution:
 
         #print(f'{adjList=}')
         for node in adjList:
+            #early termination
+            if cycleFound:
+                return False
             if node not in visited:
                 dfs(node)
         #print(f'{visited=}')
