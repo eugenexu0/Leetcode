@@ -2,11 +2,8 @@ class Solution:
     def coinChange(self, coins: list[int], amount: int) -> int:
         dp = [math.inf] * (amount + 1)
         dp[0] = 0
-        for c in coins:
-            if c <= amount:
-                dp[c] = 1
         for i in range(amount + 1):
-            if i == math.inf:
+            if dp[i] == math.inf:
                 continue
             for c in coins:
                 if i + c > amount:
