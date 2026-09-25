@@ -1,35 +1,23 @@
-class Solution(object):
-    def longestPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: str
-        """
-
-        if not s:
-            return ""
-        maxLen = 1
-        leftSol = rightSol = 0
-        for i in range(0, len(s)):
-            #odd
-            left = i-1
-            right = i+1
-            while (left >= 0 and right < len(s) and s[left] == s[right]):
-                if (right - left + 1 > maxLen):
-                    maxLen = right - left + 1
-                    leftSol, rightSol = left, right
-                left -= 1
-                right += 1
-            
-            #even
-            left = i
-            right = i+1
-            while (left >= 0 and right < len(s) and s[left] == s[right]):
-                if (right - left + 1 > maxLen):
-                    maxLen = right - left + 1
-                    leftSol, rightSol = left, right
-                left -= 1
-                right += 1
-
-        return s[leftSol : rightSol + 1]
-
-        
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        ans = ""
+        anslen = 0
+        #odd
+        for i in range(len(s)):
+            l, r = i, i
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if r - l + 1 > anslen:
+                    ans = s[l:r+1]
+                    anslen = r - l + 1
+                l -= 1
+                r += 1
+        #even
+        for i in range(1, len(s)):
+            l, r = i - 1, i
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if r - l + 1 > anslen:
+                    ans = s[l:r+1]
+                    anslen = r - l + 1
+                l -= 1
+                r += 1
+        return ans
