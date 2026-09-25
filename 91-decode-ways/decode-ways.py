@@ -21,12 +21,11 @@ class Solution:
         prev1 = 2 if int(s[:2]) <= 26 and int(s[1]) != 0 else 1
         for i in range(2, len(s)):
             curr = 0
-            check = s[i - 1:i + 1]
-            if int(check[1]) == 0:
-                if int(check[0]) != 1 and int(check[0]) != 2:
+            if s[i] == '0':
+                if s[i - 1] != '1' and s[i - 1] != '2':
                     return 0
                 curr = prev2
-            elif 10 <= int(check) <= 26:
+            elif s[i - 1] == '1' or (s[i - 1] == '2' and s[i] <= '6'):
                 curr = prev2 + prev1
             else:
                 curr = prev1
