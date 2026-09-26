@@ -9,7 +9,7 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: list[str]) -> bool:
         ans = False
-        @lru_cache(maxsize=None)
+        @cache
         def searchWordAndShrink(tempstr):
             nonlocal ans
             if tempstr == "":
