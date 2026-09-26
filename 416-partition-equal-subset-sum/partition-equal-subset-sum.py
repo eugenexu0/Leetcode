@@ -10,7 +10,7 @@ class Solution:
             if currSum == (total / 2):
                 ans = True
                 return
-            if n >= len(nums) or ans:
+            if n >= len(nums) or ans or currSum > (total / 2):
                 return
             dp(n + 1, currSum + nums[n])
             dp(n + 1, currSum)
