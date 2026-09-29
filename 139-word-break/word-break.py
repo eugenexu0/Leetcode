@@ -8,16 +8,19 @@
 
 class Solution:
     def wordBreak(self, s: str, wordDict: list[str]) -> bool:
-        ans = False
-        @cache
-        def searchWordAndShrink(tempstr):
-            nonlocal ans
-            if tempstr == "":
-                ans = True
-            for i in range(longest):
-                if tempstr[:i + 1] in wordSet:
-                    searchWordAndShrink(tempstr[i + 1:])
-        longest = len(max(wordDict, key=len))
-        wordSet = set(wordDict)
-        searchWordAndShrink(s)
-        return ans
+        #top down: recursive (substr -> bool)
+        #optimize: index -> bool (instead of substr)
+        #bottom up: dp[i] -> bool (can we reach s[:i]?)
+        #recurrence relation: dp[i] = True if dp[i - len(word)] and s[i - len(word):i] == word
+        #base case: dp[0] = True
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+        for i in range(1, len(dp)):
+            for word in wordDict:
+                if i < len(word) - 1:
+                    continue
+                if not dp[i]:
+                    dp[i] = dp[i - len(word)] and s[i - len(word):i] == word
+                #print(f'{word=}, {i=}, {s[:i]=}, {dp[i]=}')
+        return dp[-1]
+                
