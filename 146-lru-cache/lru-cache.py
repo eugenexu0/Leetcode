@@ -1,55 +1,75 @@
 class Node:
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
-        self.prev = self.next = None
+    def __init__(self, data):
+        self.data = data  #(key, val)
+        self.prev = None
+        self.next = None
 
 class LRUCache:
 
     def __init__(self, capacity: int):
-        self.cap = capacity
-        self.map = {}
-        #"next" points to RIGHT node
-        self.least, self.most = Node(0, 0), Node(0, 0)
-        #these two head/tail are "dummy" pointers
-        #least.next represents least used node
-        #most.prev represents most used node
-        self.least.next = self.most
-        self.most.prev = self.least
+        self.capacity = capacity
+        self.size = 0
+        self.map = {}    #key -> node
+        self.head = Node([0, 0]) #most recently used
+        self.tail = Node([0, 0]) #least recently used
+        # tail -> head
+        self.tail.next = self.head
+        self.head.prev = self.tail
 
-    def remove(self, node: Node):
-        #remove a node from the list
-        prev = node.prev
-        nxt = node.next
-        prev.next, nxt.prev = nxt, prev
-
-    def insert(self, node: Node):
-        #insert a node to the right of list
-        node.next = self.most
-        node.prev = self.most.prev
-        self.most.prev.next = node
-        self.most.prev = node
 
     def get(self, key: int) -> int:
-        if key in self.map:
-            #reorder to put node in most used
-            self.remove(self.map[key])
-            self.insert(self.map[key])
-            #return value
-            return self.map[key].value
-        return -1
+        #hashmap : key -> val
+        if key not in self.map:
+            return -1
+        #node.prev <- -> node -> <- node.next
+
+        #remove
+        node = self.map[key]
+        #print(f'{node.data=}')
+        #print(f'{node.prev.data=}')
+        #print(f'{node.next.data=}')
+        node.next.prev = node.prev
+        node.prev.next = node.next
+
+        #re-add to "MRU" spot (head)
+        self.head.prev.next = node
+        node.prev = self.head.prev
+        self.head.prev = node
+        node.next = self.head
+        return node.data[1]
+
 
     def put(self, key: int, value: int) -> None:
-        if key in self.map:
-            self.remove(self.map[key])
-        node = Node(key, value)
-        self.map[key] = node
-        self.insert(node)
-        if len(self.map) > self.cap:
-            removed = self.least.next
-            self.remove(removed)
-            del self.map[removed.key]
-        
+        #need:
+        #track LRU; have some ordering such that
+        #LRU is popped when cap is full
+        if key not in self.map:
+            if self.size == self.capacity:
+                #remove from map
+                removeKey = self.tail.next.data[0]
+                del self.map[removeKey]
+
+                #remove from linkdelist
+                removeNode = self.tail.next
+                removeNode.next.prev = self.tail
+                self.tail.next = removeNode.next
+                self.size -= 1
+
+            #add 
+            node = Node([key, value])
+            #add to linkedlist
+            self.head.prev.next = node
+            node.prev = self.head.prev
+            self.head.prev = node
+            node.next = self.head
+            #add to map
+            self.map[key] = node
+            self.size += 1
+        else:
+            #already in cache:
+            #update map, update to MRU
+            self.map[key].data[1] = value
+            self.get(key)
 
 
 # Your LRUCache object will be instantiated and called as such:
