@@ -17,7 +17,7 @@ class Solution:
         dp[0] = True
         for i in range(1, len(dp)):
             for word in wordDict:
-                if i < len(word) - 1:
+                if i < len(word):
                     continue
                 if not dp[i]:
                     dp[i] = dp[i - len(word)] and s[i - len(word):i] == word
